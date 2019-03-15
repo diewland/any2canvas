@@ -1,6 +1,7 @@
 # from any2canvas
 from video/canvas to (another) canvas
 
+How to use
 ```javascript
 // video to canvas
 var v = new Video2Canvas({
@@ -22,3 +23,4 @@ var c = new Canvas2Canvas({
   },
 });
 ```
+<a href='https://diewland.github.io/any2canvas/'>demo</a>
