@@ -1,14 +1,14 @@
 function Canvas2Canvas(options){
   options = options || {};
-  this.video = options.video || document.querySelectorAll('canvas')[0]; // source canvas
-  this.canvas = options.canvas || document.querySelectorAll('canvas')[1]; // dest canvas
-  this.ctx = this.canvas.getContext('2d');
+  this.src = options.src || document.querySelectorAll('canvas')[0]; // source canvas
+  this.dest = options.dest || document.querySelectorAll('canvas')[1]; // dest canvas
+  this.ctx = this.dest.getContext('2d');
   this.fps = options.fps || 30;
   this.draw_fn = options.draw_fn || function(ctx, video){ ctx.drawImage(video, 0, 0); };
 
   // internal aliases
-  let video = this.video;
-  let canvas = this.canvas;
+  let src = this.src;
+  let dest = this.dest;
   let ctx = this.ctx;
   let fps = this.fps;
   let draw_fn = this.draw_fn;
@@ -19,13 +19,13 @@ function Canvas2Canvas(options){
     if(persist_count > 20){ // persist
       return;
     }
-    else if(prev_w != video.width){ // change
+    else if(prev_w != src.width){ // change
       // update size
-      canvas.width = video.width;
-      canvas.height = video.height;
+      dest.width = src.width;
+      dest.height = src.height;
       // reset presist
       presist_count = 0;
-      prev_w = video.width;
+      prev_w = src.width;
     }
     else { // same
       persist_count++;
@@ -35,7 +35,7 @@ function Canvas2Canvas(options){
   // draw source canvas on dest canvas
   (function loop() {
     sync_size();
-    draw_fn(ctx, video);
+    draw_fn(ctx, src);
     setTimeout(loop, 1000 / fps); // drawing at N fps
   })();
 }

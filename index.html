@@ -14,6 +14,8 @@
         width: 320px;
         height: 240px;
       }
+      .title { font-size: 120%; font-weight: bold; }
+      .desc { font-style: italic; }
     </style>
 
     <title>Any2Canvas</title>
@@ -22,33 +24,52 @@
 
     <div class='container'>
 
-      <br>
       <h1>Any2Canvas</h1>
       <div>
         Thanks video from <a href='https://sample-videos.com'>https://sample-videos.com</a>
       </div>
-      <br>
+      <hr>
 
       <div class='row'>
         <div class='col'>
-          <div>video</div>
+          <div class='title'>video</div>
           <video autoplay muted loop>
             <source src="https://sample-videos.com/video123/mp4/480/big_buck_bunny_480p_5mb.mp4" type="video/mp4">
           </video>
-          <div>source</div>
+          <div class='desc'>source</div>
         </div>
         <div class='col'>
-          <div>canvas#cv1</div>
-          <canvas id='cv1'></canvas>
-          <div>video -> canvas #1</div>
+          <div class='title'>canvas 0</div>
+          <canvas></canvas>
+          <div class='desc'>video -> canvas 0</div>
         </div>
         <div class='col'>
-          <div>canvas#cv2</div>
-          <canvas id='cv2'></canvas>
-          <div>canvas #1 -> canvas #2</div>
+          <div class='title'>canvas 1</div>
+          <canvas></canvas>
+          <div class='desc'>canvas 0 -> canvas 1</div>
         </div>
       </div>
+
+      <div class='row'>
+        <div class='col'>
+          <div class='title'>canvas 2</div>
+          <canvas></canvas>
+          <div class='desc'>video -> canvas 2 (5fps)</div>
+        </div>
+        <div class='col'>
+          <div class='title'>canvas 3</div>
+          <canvas></canvas>
+          <div class='desc'>canvas 0 -> canvas 3 (blue 3px)</div>
+        </div>
+        <div class='col'>
+          <div class='title'>canvas 4</div>
+          <canvas></canvas>
+          <div class='desc'>canvas 0 -> canvas 4 (blur 10px)</div>
+        </div>
+      </div>
+
     </div>
+    <br>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -59,16 +80,43 @@
     <script src='./canvas2canvas.js'></script>
     <script>
 
-      // video -> canvas #1
-      var v2c = new Video2Canvas({
-        video: $('video')[0], // source
-        canvas: $('#cv1')[0], // dest
+      // video -> canvas 0
+      var v = new Video2Canvas({
+        src: $('video')[0],
+        dest: $('canvas')[0],
       });
 
-      // canvas #1 -> canvas #2
-      var c2c = new Canvas2Canvas({
-        video: $('#cv1')[0],  // source
-        canvas: $('#cv2')[0], // dest
+      // canvas 0 -> canvas 1
+      var c1 = new Canvas2Canvas({
+        src: $('canvas')[0],
+        dest: $('canvas')[1],
+      });
+
+      // video -> canvas 2 (5fps)
+      var c2 = new Video2Canvas({
+        src: $('video')[0],
+        dest: $('canvas')[2],
+        fps: 5,
+      });
+
+      // canvas 0 -> canvas 3 (blur 3px)
+      var c3 = new Canvas2Canvas({
+        src: $('canvas')[0],
+        dest: $('canvas')[3],
+        draw_fn: function(ctx, video){
+          ctx.filter = 'blur(3px)';
+          ctx.drawImage(video, 0, 0);
+        },
+      });
+
+      // canvas 0 -> canvas 4 (blur 10px)
+      var c4 = new Canvas2Canvas({
+        src: $('canvas')[0],
+        dest: $('canvas')[4],
+        draw_fn: function(ctx, video){
+          ctx.filter = 'blur(10px)';
+          ctx.drawImage(video, 0, 0);
+        },
       });
 
     </script>
